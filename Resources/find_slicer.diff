@@ -1,0 +1,26 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 4043110..22dbb65 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.3)
+ 
+ project(VMTK)
+ 
++find_package(Slicer)
++
+ # vmtk versions number
+ set(VMTK_VERSION_MAJOR 1)
+ set(VMTK_VERSION_MINOR 5)
+diff --git a/SuperBuild.cmake b/SuperBuild.cmake
+index 30d3233..ef07cf7 100644
+--- a/SuperBuild.cmake
++++ b/SuperBuild.cmake
+@@ -22,6 +22,8 @@ set_property( DIRECTORY PROPERTY EP_BASE ${base} )
+ #  set( build_type "${CMAKE_BUILD_TYPE}" )
+ #endif()
+ 
++find_package(Slicer)
++
+ set( VMTK_DEPENDS "" )
+ 
+ set( gen "${CMAKE_GENERATOR}" )

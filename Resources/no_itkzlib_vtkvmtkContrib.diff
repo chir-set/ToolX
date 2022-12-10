@@ -1,0 +1,22 @@
+diff --git a/CMake/VMTKUse.cmake.in b/CMake/VMTKUse.cmake.in
+index 901f512..d8f0c8c 100644
+--- a/CMake/VMTKUse.cmake.in
++++ b/CMake/VMTKUse.cmake.in
+@@ -6,4 +6,4 @@ include_directories(${VMTK_INCLUDE_DIRS})
+ 
+ link_directories(${VMTK_LIBRARY_DIRS})
+ 
+-link_libraries(vtkvmtkCommon vtkvmtkComputationalGeometry vtkvmtkContrib vtkvmtkDifferentialGeometry vtkvmtkIO vtkvmtkITK vtkvmtkMisc vtkvmtkSegmentation nl tet)
++link_libraries(vtkvmtkCommon vtkvmtkComputationalGeometry vtkvmtkDifferentialGeometry vtkvmtkIO vtkvmtkITK vtkvmtkMisc vtkvmtkSegmentation nl tet)
+diff --git a/SuperBuild.cmake b/SuperBuild.cmake
+index eba196d..30d3233 100644
+--- a/SuperBuild.cmake
++++ b/SuperBuild.cmake
+@@ -66,6 +66,7 @@ if( NOT USE_SYSTEM_ITK )
+       -DITK_LEGACY_SILENT:BOOL=OFF   #<-- Use of legacy code will produce compiler warnings
+       -DModule_ITKDeprecated:BOOL=ON #<-- Needed for ITKv5 now. (itkMultiThreader.h and MutexLock backwards compatibility.)
+       -DModule_ITKReview:BOOL=OFF
++      -DITK_USE_SYSTEM_ZLIB:BOOL=ON
+       )
+   else ()
+     set(ITK_GIT_TAG "v4.13.3")

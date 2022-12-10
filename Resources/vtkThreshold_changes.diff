@@ -1,0 +1,26 @@
+diff --git a/vtkVmtk/Contrib/vtkvmtkCellDimensionFilter.cxx b/vtkVmtk/Contrib/vtkvmtkCellDimensionFilter.cxx
+index 4e54cf3..4fd79c8 100644
+--- a/vtkVmtk/Contrib/vtkvmtkCellDimensionFilter.cxx
++++ b/vtkVmtk/Contrib/vtkvmtkCellDimensionFilter.cxx
+@@ -59,17 +59,18 @@ int vtkvmtkCellDimensionFilter::FillInputPortInformation(int, vtkInformation *in
+ 
+ void vtkvmtkCellDimensionFilter::ThresholdByLower(int lower)
+ {
+-  Threshold->ThresholdByLower(lower);
++  Threshold->SetLowerThreshold(lower);
+ }
+ 
+ void vtkvmtkCellDimensionFilter::ThresholdByUpper(int upper)
+ {
+-  Threshold->ThresholdByUpper(upper);
++  Threshold->SetUpperThreshold(upper);
+ }
+ 
+ void vtkvmtkCellDimensionFilter::ThresholdBetween(int lower, int upper)
+ {
+-  Threshold->ThresholdBetween(lower,upper);
++  Threshold->SetLowerThreshold(lower);
++  Threshold->SetUpperThreshold(upper);
+ }
+ 
+ int vtkvmtkCellDimensionFilter::GetLowerThreshold()

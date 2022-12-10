@@ -1,0 +1,33 @@
+** BUILDING ToolX WITH STANDALONE VMTK. **
+
+BUILDING VMTK
+
+Apply patches :
+  - no_itkzlib_vtkvmtkContrib.diff : libitkzlib.so and libvtkvmtkContrib.so
+  are not built by SlicerVMTK.
+  - vtkThreshold_changes.diff : ThresholdBetween, ThresholdByLower and
+  ThresholdByUpper have been removed in Slicer's VTK.
+  - find_slicer.diff.
+
+cmake -DSlicer_DIR:PATH=/path/to/Slicer-SuperBuild/Slicer-build \
+      -DUSE_SYSTEM_ITK:BOOL=ON \
+      -DUSE_SYSTEM_VTK:BOOL=ON \
+      ../VMTK
+----------------------------------------------------------------------
+BUILDING ToolX
+
+cmake -DSlicer_DIR:PATH=/path/to/Slicer-SuperBuild/Slicer-build \
+      -DVMTK_DIR:PATH=/path/to/VMTK-build/VMTK-Build \
+      -DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo \
+      ../
+  
+Modules built afterwards will run in Slicer.
+
+-----------------------------------------------------------------------
+** DON'T BUILD MODULES OF ToolX INSIDE SlicerVMTK **
+It's very messy, and crashes. Libraries and other files are scattered in
+other locations than in vanilla VMTK.
+
+
+-----------------------------------------------------------------------
+VMTK is not automatically built by ToolX, nor packaged together.
