@@ -187,11 +187,17 @@ void qSlicerBranchClipperModuleWidget::onApply()
        * Parameter segmentId is marked vtkNotUsed().
        */
       //segmentation->AddSegmentFromClosedSurfaceRepresentation(branchSurface, branchName, segmentRemoved ? colour : nullptr, branchId);
-      segmentation->GetSegmentation()->AddEmptySegment(branchId, branchName,
-                                                       segmentRemoved ? colour : nullptr);
-      segmentation->GetSegmentation()->GetSegment(branchId)->AddRepresentation(vtkSegmentationConverter::GetClosedSurfaceRepresentationName(), branchSurface);
+      vtkSmartPointer<vtkSegment> segment = vtkSmartPointer<vtkSegment>::New();
+      if (segmentRemoved)
+      {
+        // Crash on nullptr. No crash with nullptr in other functions like AddSegmentFromClosedSurfaceRepresentation().
+        segment->SetColor(colour);
+      }
+      segment->SetName(branchName.c_str());
+      segment->SetTag("Segmentation.Status", "inprogress");
+      segment->AddRepresentation(vtkSegmentationConverter::GetClosedSurfaceRepresentationName(), branchSurface);
+      segmentation->GetSegmentation()->AddSegment(segment, branchId);
     }
-    segmentation->Modified();
   }
   this->showStatusMessage("Finished", 5000);
 }
