@@ -155,6 +155,11 @@ void qSlicerBranchClipperModuleWidget::onApply()
   const vtkIdType numberOfBranches = logic->GetNumberOfBranches();
   for (vtkIdType i = 0; i < numberOfBranches; i++)
   {
+    std::string info("Processing branch: ");
+    info += std::to_string(i + 1) + std::string("/") + std::to_string(numberOfBranches) + std::string(".");
+    cout << info << endl;
+    this->showStatusMessage(info.c_str());
+    
     vtkNew<vtkPolyData> branchSurface;
     logic->GetBranch(i, branchSurface);
     if (branchSurface == nullptr)
