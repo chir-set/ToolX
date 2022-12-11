@@ -225,5 +225,6 @@ bool qSlicerBranchClipperModuleWidget::showStatusMessage(const QString& message,
     return false;
   }
   mainWindow->statusBar()->showMessage(message, duration);
+  qSlicerCoreApplication::application()->processEvents();
   return true;
 }
