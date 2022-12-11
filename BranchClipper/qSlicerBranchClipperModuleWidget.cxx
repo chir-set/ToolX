@@ -103,6 +103,13 @@ void qSlicerBranchClipperModuleWidget::onApply()
   if (segmentationNode && segmentationNode->IsA("vtkMRMLSegmentationNode"))
   {
     segmentation = vtkMRMLSegmentationNode::SafeDownCast(d->segmentationSelector->currentNode());
+    if (segmentation->GetSegmentation() == nullptr) // Can it happen ?
+    {
+      const char * msg = "Segmentation is NULL in MRML node, aborting";
+      cerr << msg << endl;
+      this->showStatusMessage(msg, 5000);
+      return;
+    }
     if (segmentation && segmentation->CreateClosedSurfaceRepresentation())
     {
       // ID of input whole segment.
@@ -141,16 +148,16 @@ void qSlicerBranchClipperModuleWidget::onApply()
   logic->SetCenterlines(centerlines);
   logic->SetSurface(surface);
   logic->Execute();
-  // Work on a copy of the debranched surface.
-  vtkNew<vtkPolyData> output;
-  output->DeepCopy(logic->GetOutput());
-  if (output == nullptr)
+  if (logic->GetOutput() == nullptr)
   {
     const char * msg = "Could not create a valid surface.";
     cerr << msg << endl;
     this->showStatusMessage(msg, 5000);
     return;
   }
+  // Work on a copy of the debranched surface.
+  vtkNew<vtkPolyData> output;
+  output->DeepCopy(logic->GetOutput());
   
   // Create one segment per branch.
   const vtkIdType numberOfBranches = logic->GetNumberOfBranches();
@@ -208,8 +215,10 @@ void qSlicerBranchClipperModuleWidget::onApply()
       }
       segment->SetName(branchName.c_str());
       segment->SetTag("Segmentation.Status", "inprogress");
-      segment->AddRepresentation(vtkSegmentationConverter::GetClosedSurfaceRepresentationName(), branchSurface);
-      segmentation->GetSegmentation()->AddSegment(segment, branchId);
+      if (segment->AddRepresentation(vtkSegmentationConverter::GetClosedSurfaceRepresentationName(), branchSurface))
+      {
+        segmentation->GetSegmentation()->AddSegment(segment, branchId);
+      }
     }
   }
   this->showStatusMessage("Finished", 5000);
@@ -234,6 +243,10 @@ bool qSlicerBranchClipperModuleWidget::showStatusMessage(const QString& message,
   }
   qSlicerMainWindow * mainWindow = static_cast<qSlicerMainWindow*> (mainWidget);
   if (!mainWindow /*?*/ || !mainWindow->statusBar())
+  {
+    return false;
+  }
+  if (mainWindow->statusBar() == nullptr) // ?
   {
     return false;
   }
