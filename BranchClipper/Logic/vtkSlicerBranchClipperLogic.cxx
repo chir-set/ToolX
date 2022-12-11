@@ -45,7 +45,6 @@ vtkSlicerBranchClipperLogic::vtkSlicerBranchClipperLogic()
   this->BlankingArrayName = (char*) "Blanking";
   this->CenterlineIdsArrayName = (char*) "CenterlineIds";
   this->TractIdsArrayName = (char*) "TractIds";
-  this->CenterlineGroupIds = vtkSmartPointer<vtkIdList>::New();
   
   this->Output = vtkSmartPointer<vtkPolyData>::New();
 }
@@ -118,14 +117,8 @@ void vtkSlicerBranchClipperLogic::Execute()
   clipper->SetCutoffRadiusFactor(this->CutoffRadiusFactor);
   clipper->SetClipValue(this->ClipValue);
   clipper->SetUseRadiusInformation(this->UseRadiusInformation);
-  /*
-   * If CenterlineGroupIds is set, Output is available,
-   * but some operations on it lead to a crash.
-   * Ex : GetNumberOfCells(), AddModel() ...
-   * Others succeed : GetNumberOfPoints() ...
-   */
   vtkSmartPointer<vtkIdList> centerlineGroupIds = vtkSmartPointer<vtkIdList>::New();
-  if (this->CenterlineGroupIds->GetNumberOfIds())
+  if (this->CenterlineGroupIds)
   {
     for (vtkIdType i = 0; i < this->CenterlineGroupIds->GetNumberOfIds(); i++)
     {
