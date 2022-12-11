@@ -153,6 +153,13 @@ void qSlicerBranchClipperModuleWidget::onApply()
   
   // Create one segment per branch.
   const vtkIdType numberOfBranches = logic->GetNumberOfBranches();
+  if (numberOfBranches == 0)
+  {
+    const char * msg = "No branches could be retrieved; the centerline may be invalid.";
+    cerr << msg << endl;
+    this->showStatusMessage(msg, 5000);
+    return;
+  }
   for (vtkIdType i = 0; i < numberOfBranches; i++)
   {
     std::string info("Processing branch: ");
