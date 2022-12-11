@@ -135,7 +135,8 @@ void qSlicerBranchClipperModuleWidget::onApply()
     return;
   }
   
-  // Debranch now.
+  // Debranch now. Execute() can be a long process on heavy segmentations.
+  this->showStatusMessage("Debranching, please wait...");
   vtkNew<vtkSlicerBranchClipperLogic> logic;
   logic->SetCenterlines(centerlines);
   logic->SetSurface(surface);
