@@ -33,6 +33,7 @@
 #include <vtkvmtkCenterlineBranchExtractor.h>
 #include <vtkvmtkPolyDataBranchUtilities.h>
 
+// This class is based on vmtkbranchclipper.py.
 //----------------------------------------------------------------------------
 vtkStandardNewMacro(vtkSlicerBranchClipperLogic);
 
